@@ -6,11 +6,13 @@ const { authenticate } = require("../middleware/middleware");
 const { generateToken } = require("../auth/auth.helpers");
 
 // * get all accounts - DONE
-// ! supposed to be only for superusers
+// ! only for super users
 router.get("/", authenticate, async (req, res) => {
   try {
     const accounts = await Accounts.find();
-    res.status(200).json(accounts);
+    accounts
+      ? res.status(200).json(accounts)
+      : res.status(400).json({ error: "No accounts in database" });
   } catch (err) {
     console.log(err.message);
     res.status(400).json(err.message);
@@ -18,11 +20,14 @@ router.get("/", authenticate, async (req, res) => {
 });
 
 // * get account by id - DONE
+// ! only for logged in users
 router.get("/:account_id", authenticate, async (req, res) => {
   try {
     const { account_id } = req.params;
     const account = await Accounts.findById(account_id);
-    res.status(200).json(account);
+    account
+      ? res.status(200).json(account)
+      : res.status(400).json({ error: "No account found" });
   } catch (err) {
     console.log(err.message);
     res.status(400).json(err.message);
@@ -30,7 +35,7 @@ router.get("/:account_id", authenticate, async (req, res) => {
 });
 
 // * create account - DONE
-// ! supposed to be only for superusers (for now)
+// ! only for super users
 router.post("/", async (req, res) => {
   try {
     const account = req.body;
@@ -46,7 +51,7 @@ router.post("/", async (req, res) => {
 });
 
 // * update account - DONE
-// TODO: TEST
+// ! only for super users
 router.put("/:account_id", authenticate, async (req, res) => {
   try {
     const { account_id } = req.params;
@@ -59,7 +64,8 @@ router.put("/:account_id", authenticate, async (req, res) => {
   }
 });
 
-// TODO: delete account
+// * delete account - DONE
+// ! only for super users
 router.delete("/:account_id", authenticate, async (req, res) => {
   try {
     const { account_id } = req.params;
@@ -67,7 +73,7 @@ router.delete("/:account_id", authenticate, async (req, res) => {
     res.status(200).json(removedAccount);
   } catch (err) {
     console.log(err.message);
-    res.status(500).json(err.message);
+    res.status(400).json(err.message);
   }
 });
 

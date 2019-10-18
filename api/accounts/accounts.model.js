@@ -11,7 +11,7 @@ const find = () => {
   }
 };
 
-//* get account by id
+//* get account by id - DONE
 const findById = id => {
   try {
     return db("accounts")
@@ -22,7 +22,7 @@ const findById = id => {
   }
 };
 
-//* create account
+//* create account - DONE
 const insert = async account => {
   try {
     await db("accounts").insert(account);
@@ -31,7 +31,7 @@ const insert = async account => {
   }
 };
 
-//* update account
+//* update account - DONE
 const update = async (id, changes) => {
   try {
     changes
@@ -45,7 +45,7 @@ const update = async (id, changes) => {
   }
 };
 
-//* remove account
+//* remove account - DONE
 const remove = async id => {
   try {
     await db("accounts")
