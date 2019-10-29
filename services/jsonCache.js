@@ -86,27 +86,71 @@ async function getPumps() {
             };
           })
         : {};
+      // : (res.data.status === 1)
+      // ? res.data.dates.forEach((date, index) => {
+      //   newData = {
+      //     ...newData,
+      //     statuses: {
+      //       date: date,
+      //       count: 0,
+      //       total: 0,
+      //       status: 0,
+      //       pad_counts: 0,
+      //       pad_seconds: 0,
+      //       reported_percent: 0
+      //     }
+      //   }
+      // }) : {}
       // : statuses = {
-
-      // }
+      //     date: date,
+      //     count: 0,
+      //     total: 0,
+      //     status: 0,
+      //     pad_counts: 0,
+      //     pad_seconds: 0,
+      //     reportedPercent: 0
+      //  }
+      console.log("results line 98", results);
+      if (res.data.status === 1) {
+        results.push({
+          id: pump,
+          ...pumps[pump],
+          status: res.data.status,
+          dates: 0,
+          statuses: {
+            date: "",
+            count: 0,
+            total: 0,
+            status: 1,
+            pad_counts: 1,
+            pad_seconds: 1,
+            reported_percent: 1
+          }
+        });
+      } else {
+        results.push({
+          id: pump,
+          ...pumps[pump],
+          status: res.data.status,
+          statuses: newData
+        });
+      }
+    } catch (err) {
+      console.error(`Error on pump #${pump}`);
       results.push({
         id: pump,
         ...pumps[pump],
-        status: res.data.status,
-        statuses: newData
+        status: 0,
+        dates: 0,
+        statuses: 0,
+        error: "500"
       });
-    } catch (err) {
-      console.error(`Error on pump #${pump}`);
-      results.push({ id: pump, ...pumps[pump], status: 0, error: "500" });
     }
   });
+  // console.log(newData, 'this is the new data')
   console.log("Fetching Pumps Success");
   return { lastFetch: moment().unix(), pumps: results };
 }
-// else {
-//   console.log("Data Up To Date")
-//   return oldData
-// }
 
 async function createStore() {
   // const oldData = require("../assets/cache/longStore.json")
