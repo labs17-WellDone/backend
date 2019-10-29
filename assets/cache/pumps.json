@@ -1,5 +1,5 @@
 {
-    "lastFetch": 1572379541,
+    "lastFetch": 1572382458,
     "pumps": [
         {
             "id": "4715",
@@ -957,8 +957,6 @@
             "static": 1.6,
             "level_dynamic": 14,
             "status": 0,
-            "dates": 0,
-            "statuses": 0,
             "error": "500"
         }
     ]
