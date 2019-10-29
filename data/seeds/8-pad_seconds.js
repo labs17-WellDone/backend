@@ -7,7 +7,7 @@ exports.seed = function(knex) {
       // Inserts seed entries
       return knex('pad_seconds').insert([
         // id 1
-        {seconds: 28, history_id: 1},
+        {seconds: 28, seriues_order 1},
         // id 2
         {seconds: 18, history_id: 1},       
           // id 3

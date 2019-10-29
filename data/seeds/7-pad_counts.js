@@ -17,12 +17,11 @@ exports.seed = function(knex) {
            // id 5
          {counts: 60, history_id: 2},
          // id 6
-         {counts: 30, history_id: 2},       
+         {counts: 50, history_id: 2},       
            // id 7
-           {seconds: 20, history_id: 2},  
+           {seconds: 22, history_id: 2},  
             // id 8
-            {seconds: 10, history_id: 2},   
+            {seconds: 17, history_id: 2},   
       ]);
     });
 };
-hadd
