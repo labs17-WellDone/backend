@@ -2,10 +2,20 @@ const knex = require("knex");
 const config = require("../../knexfile");
 const db = require("../../data/dbConfig.js");
 
-function addPump(pump) {
-  return db("pumps")
-    .insert(pump)
-    .returning("id");
+
+function addPump(pump){
+    return db('pumps')
+            .insert(pump)
+            .returning("id")
+}
+
+
+// addds multiple pumps to the database
+function addPumps(pumpsArr){
+  pumpsArr.forEach(pump => {
+    return db('pumps')
+    .insert({pump})
+  });
 }
 
 function findPumps() {
@@ -74,11 +84,18 @@ const updatePump = (changes, id) => {
 };
 
 module.exports = {
-  addPump,
-  getPumps,
-  findPumps,
-  getPumpsByOrgId,
-  getPumpById,
-  deletePump,
-  updatePump
-};
+    // addOrg,
+    // addAccount,
+    // getAccounts,
+    // getOrgs,
+    addPumps,
+    addPump,
+    getPumps,
+    findPumps,
+    getPumpsByOrgId,
+    // getPumpsAll,
+    getPumpById,
+    deletePump,
+    updatePump
+}
+
