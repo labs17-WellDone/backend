@@ -100,6 +100,7 @@ async function getPumps() {
         results.push({ id: pump, ...pumps[pump], status: 0, error: "500" })
       }
     })
+    // console.log(newData, 'this is the new data')
     console.log("Fetching Pumps Success")
     return { lastFetch: moment().unix(), pumps: results }
   } 
@@ -110,11 +111,10 @@ async function getPumps() {
 
 
 async function createStore() {
-  const oldData = require("../assets/cache/longStore.json")
+  // const oldData = require("../assets/cache/longStore.json")
   const data = require("../assets/cache/pumps.json")
   let pumps = {}
   data.pumps.forEach(({ id, dates, statuses }, index) => {
-
     // let pumpOldData = oldData.pumps ? oldData.pumps[id] : {}
 
     pumps = {
