@@ -82,10 +82,24 @@ async function getPumps() {
                   pad_counts: res.data.statuses[index].padCounts,
                   pad_seconds:res.data.statuses[index].padSeconds,
                   reported_percent:res.data.statuses[index].reportedPercent
-                },
+                }    
               }
-            })
-            : []
+            }) : {}
+            // : (res.data.status === 1)
+            // ? res.data.dates.forEach((date, index) => {
+            //   newData = {
+            //     ...newData,
+            //     statuses: {
+            //       date: date,
+            //       count: 0,
+            //       total: 0,
+            //       status: 0,
+            //       pad_counts: 0,
+            //       pad_seconds: 0,
+            //       reported_percent: 0
+            //     }    
+            //   }
+            // }) : {}
           // : statuses = {
           //     date: date,
           //     count: 0,
@@ -96,12 +110,23 @@ async function getPumps() {
           //     reportedPercent: 0
           //  }
           console.log("results line 98", results)
-        results.push({
-          id: pump,
-          ...pumps[pump],
-          status: res.data.status,
-          statuses: newData,
-        })
+         if (res.data.status === 1) {
+          results.push({ 
+            id: pump,
+            ...pumps[pump],
+            status: res.data.status,
+            dates: 0,
+            statuses: 0
+          }) 
+        } else {
+          results.push({
+            id: pump,
+            ...pumps[pump],
+            status: res.data.status,
+            statuses: newData,
+          })
+        }
+
       } catch (err) {
         console.error(`Error on pump #${pump}`)
         results.push({ id: pump, 
