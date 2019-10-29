@@ -146,7 +146,7 @@ function addSensor(sensor) {
   }
 
   function addPadSeconds(seconds) {
-    return db("pad_counts")
+    return db("pad_seconds")
       .insert(seconds)
       .returning("id")
       .then(res => {
@@ -166,6 +166,16 @@ function addStatus (history){
           }
           console.log(counts)
           addPadCounts(counts, console.log("help"))
+        })
+      })
+      const getPadSeconds = Data.pumps.forEach((data, idx) => {
+        const insertPadSeconds = data.statuses.statuses.pad_seconds.map(item => {
+          let seconds = {
+          history_id: res.id,
+          seconds: item
+          }
+          console.log(seconds)
+          addPadSeconds(seconds, console.log("help"))
         })
       })
     })
