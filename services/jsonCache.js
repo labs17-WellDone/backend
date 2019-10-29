@@ -85,10 +85,17 @@ async function getPumps() {
                 },
               }
             })
-          : {}
-            // : statuses = {
-
-          // }
+            : []
+          // : statuses = {
+          //     date: date,
+          //     count: 0,
+          //     total: 0,
+          //     status: 0,
+          //     pad_counts: 0,
+          //     pad_seconds: 0,
+          //     reportedPercent: 0
+          //  }
+          console.log("results line 98", results)
         results.push({
           id: pump,
           ...pumps[pump],
@@ -97,7 +104,12 @@ async function getPumps() {
         })
       } catch (err) {
         console.error(`Error on pump #${pump}`)
-        results.push({ id: pump, ...pumps[pump], status: 0, error: "500" })
+        results.push({ id: pump, 
+          ...pumps[pump], 
+          status: 0,
+          dates: 0, 
+          statuses: 0, 
+          error: "500" })
       }
     })
     // console.log(newData, 'this is the new data')
@@ -123,6 +135,7 @@ async function createStore() {
         // ...pumpOldData,
         ...data.pumps.find(pump => pump.id === id).statuses,
       },
+      // statuses: 0
     }
   })
 
