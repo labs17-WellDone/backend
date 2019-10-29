@@ -6,8 +6,8 @@ exports.up = function(knex) {
       .unsigned()
       .references("id")
       .inTable("pumps")
-      .onDelete("CASCADE")
-      .onUpdate("CASCADE");
+      .onDelete("RESTRICT")
+      .onUpdate("RESTRICT");
     column.integer("physical_id");
     column.string("kind");
     column.string("type");

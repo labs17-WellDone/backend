@@ -118,7 +118,7 @@ async function getPumps() {
           status: res.data.status,
           dates: 0,
           statuses: {
-            date: "",
+            date: "Date",
             count: 0,
             total: 0,
             status: 1,
@@ -142,7 +142,15 @@ async function getPumps() {
         ...pumps[pump],
         status: 0,
         dates: 0,
-        statuses: 0,
+        statuses: {
+          date: "Date",
+          count: 0,
+          total: 0,
+          status: 1,
+          pad_counts: 1,
+          pad_seconds: 1,
+          reported_percent: 1
+        },
         error: "500"
       });
     }

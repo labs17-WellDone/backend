@@ -62,22 +62,20 @@ const seedJSONPumps = () => {
 
    const seedJSONHistory = () => {
      Data.pumps.map(data => {
-        // console.log('current data map = ', data);
-          if(data.statuses.statuses === {}){
-            console.log("data is {}");
-          }
+        console.log('current data map in history= ', data)
+          console.log("data.statuses", data.statuses)
        let history = {
          sensor_id: data.id,
-         count: data.statuses.statuses.count,
-         total: data.statuses.statuses.total,
-         status: data.statuses.statuses.status,
-         date: data.statuses.statuses.date,
-        reported_percent: data.statuses.statuses.reported_percent
+         date: data.statuses.date,
+         count: data.statuses.count,
+         total: data.statuses.total,
+         status: data.statuses.status,
+        reported_percent: data.statuses.reported_percent
        }  
        let currentId = history.sensor_id   
       //  console.log(currentId, "this is the current id")  
        addHistory(history);
-       addStatus(history);
+      //  addStatus(history);
      })
    };
 
