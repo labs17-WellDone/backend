@@ -110,13 +110,33 @@ async function getPumps() {
           //     reportedPercent: 0
           //  }
           console.log("results line 98", results)
-         if (res.data.status === 1) {
+         if (res.data.status === 1 || res.data.status === 0) {
           results.push({ 
             id: pump,
             ...pumps[pump],
             status: res.data.status,
             dates: 0,
-            statuses: 0
+            statuses: {
+              statuses: {
+                date: "Date",
+                count: 0,
+                total: 0,
+                status: 1,
+                pad_counts: [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                pad_seconds: [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                reported_percent: 0
+            }
+        }
           }) 
         } else {
           results.push({
@@ -132,8 +152,27 @@ async function getPumps() {
         results.push({ id: pump, 
           ...pumps[pump], 
           status: 0,
-          dates: 0, 
-          statuses: 0, 
+          statuses: {
+            statuses: {
+              date: "Date",
+              count: 0,
+              total: 0,
+              status: 1,
+              pad_counts: [
+                  0,
+                  0,
+                  0,
+                  0
+              ],
+              pad_seconds: [
+                  0,
+                  0,
+                  0,
+                  0
+              ],
+              reported_percent: 0
+          }
+      },
           error: "500" })
       }
     })

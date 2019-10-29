@@ -63,9 +63,10 @@ const seedJSONPumps = () => {
    const seedJSONHistory = () => {
      Data.pumps.map(data => {
         // console.log('current data map = ', data);
-          if(data.statuses.statuses === {}){
-            console.log("data is {}");
-          }
+          // if(data.statuses.statuses === {}){
+          //   console.log("data is {}");
+          // }
+        console.log("statuses",data.statuses)
        let history = {
          sensor_id: data.id,
          count: data.statuses.statuses.count,

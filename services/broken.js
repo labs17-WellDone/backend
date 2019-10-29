@@ -33,20 +33,19 @@ async function main() {
 const url =
   "https://dashboard.welldone.org/.netlify/functions/get_momo_status?id="
 async function getPumps() {
-  // const { data: config } = await prismic.getDoc("config")
-  // const oldData = require("../assets/cache/pumps.json")
-  // if (
-  //   !oldData.lastFetch ||
-  //   oldData.lastFetch <
-  //     moment()
-  //       .subtract(config.update_data, "hours")
-  //       .unix()
-  // ) {
-  //   console.log("Fetching Pumps Init")
+  const { data: config } = await prismic.getDoc("config")
+  const oldData = require("../assets/cache/pumps.json")
+  if (
+    !oldData.lastFetch ||
+    oldData.lastFetch <
+      moment()
+        .subtract(config.update_data, "hours")
+        .unix()
+  ) {
+    console.log("Fetching Pumps Init")
     let pumps = {}
     const prismicPumps = await prismic.getDocs("pump")
     await asyncForEach(prismicPumps.results, async pump => {
-      // console.log(pump.data)
       let village = null
       if (pump.data && pump.data.village.id && !pump.data.village.isBroken) {
         village = await prismic.getVillage(pump.data.village.id)
@@ -85,8 +84,7 @@ async function getPumps() {
               pad_seconds: res.data.statuses[index].padCounts //.map((item) => item),
             },
           }
-        })
-          : {}
+        }) : {}
         results.push({
           id: pump,
           ...pumps[pump],
@@ -99,12 +97,11 @@ async function getPumps() {
       }
     })
     console.log("Fetching Pumps Success")
-    // console.log("pumps results*********",{ lastFetch: moment().unix(), pumps: results })
     return { lastFetch: moment().unix(), pumps: results }
-  // } else {
-  //   console.log("Data Up To Date")
-  //   return oldData
-  // }
+  } else {
+    console.log("Data Up To Date")
+    return oldData
+  }
 }
 
 async function createStore() {
