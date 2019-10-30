@@ -2,7 +2,10 @@
 exports.up = function(knex) {
     return knex.schema.createTable("pad_seconds", column => {
         column.increments();
-        column.string("seconds");
+        column.integer("seconds_1");
+        column.integer("seconds_2");
+        column.integer("seconds_3");
+        column.integer("seconds_4");      
         column
           .integer("history_id")
           .unsigned()
@@ -10,6 +13,7 @@ exports.up = function(knex) {
           .inTable("history")
           .onUpdate("RESTRICT")
           .onDelete("RESTRICT");
+   
       });
     };
   

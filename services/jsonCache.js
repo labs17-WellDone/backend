@@ -33,17 +33,6 @@ async function main() {
 const url =
   "https://dashboard.welldone.org/.netlify/functions/get_momo_status?id="
 async function getPumps() {
-  // const { data: config } = await prismic.getDoc("config")
-  // we don't want to subtract this data anymore...
-  // const oldData = require("../assets/cache/pumps.json")
-  // if (
-    // // ! oldData.lastFetch ||
-  //   oldData.lastFetch <
-  //     moment()
-  //       .subtract(config.update_data, "hours")
-  //       .unix()
-  // ) {
-  //   console.log("Fetching Pumps Init")
     let pumps = {}
     const prismicPumps = await prismic.getDocs("pump")
     await asyncForEach(prismicPumps.results, async pump => {
@@ -67,7 +56,6 @@ async function getPumps() {
     let results = []
     await asyncForEach(Object.keys(pumps), async (pump, index) => {
       try {
-        console.log(`${index + 1}/${Object.keys(pumps).length}`)
         const res = await axios.get(`${url}${pump}`)
         let newData = {}
         res.data
@@ -86,9 +74,7 @@ async function getPumps() {
               }
             })
           : {}
-            // : statuses = {
-
-          // }
+           
         results.push({
           id: pump,
           ...pumps[pump],
@@ -103,24 +89,19 @@ async function getPumps() {
     console.log("Fetching Pumps Success")
     return { lastFetch: moment().unix(), pumps: results }
   } 
-  // else { 
-  //   console.log("Data Up To Date")
-  //   return oldData
-  // }
-
+ 
 
 async function createStore() {
-  const oldData = require("../assets/cache/longStore.json")
+
   const data = require("../assets/cache/pumps.json")
   let pumps = {}
   data.pumps.forEach(({ id, dates, statuses }, index) => {
 
-    // let pumpOldData = oldData.pumps ? oldData.pumps[id] : {}
-
+  
     pumps = {
       ...pumps,
       [id]: {
-        // ...pumpOldData,
+       
         ...data.pumps.find(pump => pump.id === id).statuses,
       },
     }
@@ -136,3 +117,8 @@ async function asyncForEach(array, callback) {
 }
      
 main();
+
+
+module.exports = {
+  getPumps
+}
