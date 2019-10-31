@@ -9,6 +9,17 @@ const find = () => {
     console.log(err.message);
   }
 };
+const findMore = (id) => {
+  try {
+    return db("history")
+    .join("pad_counts")
+    .where({"pad_counts.history_id":id})
+    // .and({"pad_seconds.history_id":id})
+  }
+  catch (err) {
+    console.log(err.message);
+}
+}
 
 const findById = id => {
   try {
@@ -33,7 +44,6 @@ function getHistoryBySensorId(id) {
 const insert = async historical => {
   try {
     await db("history").insert(historical);
-    console.log("History successfully created!");
   } catch (err) {
     console.log(err);
   }
@@ -70,11 +80,30 @@ const remove = async id => {
   }
 };
 
+const rm = async (id) => {
+  console.log(id);
+  let sensor = {}
+  let statuses = {}
+
+  await db('pumps').where('sensor_ID', id).then(p => sensor = p);
+
+
+  await db('history').where('sensor_id', id).then(s => statuses = s);
+  console.log(statuses)
+
+  sensor = {'sensor': sensor, 'history': statuses}
+  return sensor
+}
+
 module.exports = {
   find,
+  findMore,
   findById,
   insert,
   update,
   remove,
-  getHistoryBySensorId
+  getHistoryBySensorId,
+  rm
 };
+
+

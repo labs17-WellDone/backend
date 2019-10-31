@@ -112,8 +112,38 @@ seedJSONPumps,
 seedJSONSensors;
 
 
-select * FROM history 
-JOIN pad_counts 
-JOIN pad_seconds  
-where history.id=pad_counts.history_id 
-AND history.id=pad_seconds.history_id
+
+
+
+
+// // helper 1 save date
+// date_array_from_api.forEach((date, index) => {
+//   saveStatus(status_array[index], date, sensor_id)
+
+// } )
+
+
+// saveStatus(status, date, sensor_id) {
+//   status_id = status_db_helper({'date': date,'seonsor_id': sensor_id,'count': 'blah', 'count': 'blah'}) // non_array fields and the helper has to return the id of the status that is a key
+//   pad_counts_db_helper({'status_id': status_id, 'pad_count_1': status.pad_count[0]})
+//   pad_second_db_helper({'status_id': status_id, 'pad_seconds_1': status.pad_count[0]})
+
+// }
+
+// // helper 2 save pad counts to query
+// pad_counts_db_helper(pad_counts_object){
+// save_to_db
+// }
+
+// //helper 3 save pad seconds
+// pad_seconds_db_helper(pad_seconds_object){
+//   save_to_db
+// }
+
+// // helper 4 query the data
+// getStatus(date, sensor_id) {
+//   status = Knex('status').where({date: date, sensor_id: sensor_id})
+//   counts = Knex('pad_counts').where({status_id: status.id})
+//   seconds = Knex('pad_seconds').where({status_id: status.id})
+//   return {...status, counts: counts, seconds: seconds}
+// }

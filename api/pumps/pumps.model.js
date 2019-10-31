@@ -3,8 +3,8 @@ const config = require("../../knexfile");
 const db = require("../../data/dbConfig.js");
 
 
-function addPump(pump){
-    return db('pumps')
+const addPump = async pump => { 
+    return await db('pumps')
             .insert(pump)
             .returning("id")
 }

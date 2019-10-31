@@ -19,11 +19,9 @@ select * FROM history JOIN pad_counts JOIN pad_seconds ON date
 select * FROM history JOIN pad_counts JOIN pad_seconds ON date where history.id=pad_counts.history_id AND pad_seconds.history_id
 
 
--- works but wrong
+-- works
 select * FROM history 
 JOIN pad_counts 
 JOIN pad_seconds  
 where history.id=pad_counts.history_id 
 AND history.id=pad_seconds.history_id
-
-

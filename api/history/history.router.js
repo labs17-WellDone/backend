@@ -3,11 +3,25 @@ const History = require("./history.model");
 const { authenticate } = require("../middleware/middleware");
 const { validateHistory } = require("../middleware/middleware");
 
-// GET to /api/history
+// // GET to /api/history
+// router.get("/", (req, res) => {
+//   History.find()
+//     .then(history => {
+//       res.status(200).json(history);
+//     })
+//     .catch(err => {
+//       res.status(500).json({ message: err.message });
+//     });
+// });
+
+
+//  Get to /api/history 
 router.get("/", (req, res) => {
-  History.find()
+  const { id } = req.params;
+  History.findMore(id)
     .then(history => {
       res.status(200).json(history);
+      console.log("this is a test")
     })
     .catch(err => {
       res.status(500).json({ message: err.message });

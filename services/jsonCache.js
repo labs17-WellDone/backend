@@ -2,6 +2,8 @@ const fs = require("fs")
 const axios = require("axios")
 const prismic = require("./prismicData")
 const moment = require("moment")
+const history_model = require("../api/history/history.model")
+const pumps_model = require("../api/pumps/pumps.model")
 
 async function cacheResource(resourceName, resourceLoader) {
   const resource = await resourceLoader()
@@ -41,6 +43,16 @@ async function getPumps() {
         village = await prismic.getVillage(pump.data.village.id)
       }
       if (pump.data && pump.data.latitude && pump.data.longitude) {
+        pumps_model.addPump({
+          org_id: 1, // Must be updated when feature is added
+          country_name: village.id,
+          province_name: village.province,
+          district_name: village.district,
+          commune_name: village.commune,
+          latitude: pump.data.latitude,
+          longitude: pump.data.longitude,
+          sensor_ID: pump.uid
+        });
         pumps = {
           ...pumps,
           [pump.uid]: {
@@ -60,6 +72,22 @@ async function getPumps() {
         let newData = {}
         res.data
           ? res.data.dates.forEach((date, index) => {
+            history_model.insert({
+              date: date,
+              count: res.data.statuses[index].count,
+              total: res.data.statuses[index].total,
+              status: res.data.statuses[index].status,
+              sensor_id: pump,
+              reported_percent: res.data.statuses[index].reportedPercent,
+              pad_count_1: res.data.statuses[index].padCounts[0],
+              pad_count_2: res.data.statuses[index].padCounts[1],
+              pad_count_3: res.data.statuses[index].padCounts[2],
+              pad_count_4: res.data.statuses[index].padCounts[3],
+              pad_seconds_1: res.data.statuses[index].padSeconds[0],
+              pad_seconds_2: res.data.statuses[index].padSeconds[1],
+              pad_seconds_3: res.data.statuses[index].padSeconds[2],
+              pad_seconds_4: res.data.statuses[index].padSeconds[3]
+            })
               newData = {
                 ...newData,
                 statuses: {
@@ -68,7 +96,7 @@ async function getPumps() {
                   total: res.data.statuses[index].total,
                   status: res.data.statuses[index].status,
                   pad_counts: res.data.statuses[index].padCounts,
-                  pad_seconds:res.data.statuses[index].padSeconds,
+                  pad_seconds: res.data.statuses[index].padSeconds,
                   reported_percent:res.data.statuses[index].reportedPercent
                 },
               }

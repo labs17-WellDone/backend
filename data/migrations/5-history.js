@@ -7,7 +7,14 @@ exports.up = function(knex) {
     column.integer("status").nullable();
     column.integer("sensor_id");
     column.integer("reported_percent").nullable();
-
+    column.integer("pad_count_1").nullable();
+    column.integer("pad_count_2").nullable();
+    column.integer("pad_count_3").nullable();
+    column.integer("pad_count_4").nullable();
+    column.integer("pad_seconds_1").nullable();
+    column.integer("pad_seconds_2").nullable();
+    column.integer("pad_seconds_3").nullable();
+    column.integer("pad_seconds_4").nullable();
   });
 };
 
