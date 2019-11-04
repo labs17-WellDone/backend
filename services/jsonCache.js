@@ -2,6 +2,8 @@ const fs = require("fs")
 const axios = require("axios")
 const prismic = require("./prismicData")
 const moment = require("moment")
+// const cron = require("node-cron")
+const schedule = require('node-schedule');
 // const { getUpdatedPumps, getUpdatedSensors, getUpdatedHistory  } = require('./mapData')
 // const getUpdatedPumps = require('./mapData')
 const router = require("express").Router();
@@ -156,18 +158,59 @@ async function asyncForEach(array, callback) {
 }
 
 
-function setClock() {
-  setTimeout( function() {
-    main();
-    // getUpdatedPumps();
-    // getUpdatedSensors();
-    // getUpdatedHistory();
-    // console.log(typeof getUpdatedPumps, "this is type of getUpdatedPumps")
-    console.log("fetching Data");
-  }, 5000 );
-}
+// function setClock() {
+//   setTimeout( function() {
+//     main();
+//     // getUpdatedPumps();
+//     // getUpdatedSensors();
+//     // getUpdatedHistory();
+//     // console.log(typeof getUpdatedPumps, "this is type of getUpdatedPumps")
+//     console.log("fetching Data");
+//   }, 5000 );
+// }
 
 
-setClock()
+// setClock()
 
 
+// const setTime = () => {
+//   setInterval(function () {
+//     var date = new Date();
+//     console.log(date.getTime());
+//   // if ((date.getSeconds() % 5) == 0) {
+//   console.log("running")
+//     //  getUpdatedPumps();
+//     // getUpdatedSensors();
+//     // getUpdatedHistory();
+//     main()
+//   // }
+// }, 2000);
+// }
+// // setInterval(function(){ 
+// //   main()
+// //   console.log("running"); 
+// // }, 3000);
+
+// setTime()
+// const setTime = () => {
+//   cron.schedule("1 * * * *", function() {
+//   console.log("running a task every minute");
+//   main()
+// })};
+// // main()
+// setTime()
+
+// const setTime = schedule.scheduleJob('1 *    *    *    *    *', function(){
+//   console.log('Time for tea!');
+//   main()
+// });
+
+// setTime
+
+var rule = new schedule.RecurrenceRule();
+rule.second = 30;
+ 
+var j = schedule.scheduleJob(rule, function(){
+  console.log('The answer to life, the universe, and everything!');
+  main();
+});
