@@ -9,7 +9,7 @@
     "fetch": "node services/jsonCache.js",
     "start": "node index.js",
     "test": "cross-env DB_ENV=test jest --watch",
-    "sloth": "sloth .5 \"node services/jsonCache.js && nodemon index.js\" true true"
+    "sloth": "sloth .1 \"node services/jsonCache.js && nodemon index.js\" true true"
   },
   "jest": {
     "testEnvironment": "node",

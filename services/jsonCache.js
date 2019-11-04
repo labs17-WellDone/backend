@@ -207,10 +207,12 @@ async function asyncForEach(array, callback) {
 
 // setTime
 
-var rule = new schedule.RecurrenceRule();
-rule.second = 30;
+// var rule = new schedule.RecurrenceRule();
+// rule.second = 30;
  
-var j = schedule.scheduleJob(rule, function(){
-  console.log('The answer to life, the universe, and everything!');
-  main();
-});
+// var j = schedule.scheduleJob(rule, function(){
+//   console.log('The answer to life, the universe, and everything!');
+//   main();
+// });
+
+main()
