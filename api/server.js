@@ -24,7 +24,7 @@ const padCountsRouter = require("./pad_counts/pad_counts.router")
 
 server.use(express.json());
 server.use(helmet());
-server.use(cors());
+server.use(cors({ credentials: true, origin: 'http://localhost:3000'})) 
 server.use("/api/auth", authRouter);
 server.use("/api/orgs", orgRouter);
 server.use("/api/pumps", pumpsRouter);
