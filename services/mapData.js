@@ -279,12 +279,18 @@ const getUpdatedPumps = (orgResults) => {
                 })
               })
             }) 
-          }
+          } // else here that activates next function, ie: addNewOrgs
+
+
         })
       }
       orgCheck()
     }
         // CONTINUE FROM HERE TO FINISH
+
+        // function addNewOrgs () {}
+
+        
 //       } else if (res.length > 0) {
 
 //         console.log(res.length, "this is res length line 285")
@@ -390,6 +396,7 @@ async function dataUpdate () {
         let newData = {}
        resMomo.data
           ? resMomo.data.dates.forEach(async (date, index) => {
+            // console.log(resMomo.data, "this is the res momo data")
               newData = {
                 ...newData,
                 statuses: {
@@ -410,7 +417,7 @@ async function dataUpdate () {
           status: resMomo.data.status,
           statuses: newData,
         })
-      // console.log(results, "******RESULTS")
+      console.log(results, "******RESULTS")
       } catch (err) {
         console.log(`Error on sensor #${sensor.physical_id}`)
         console.log(err.message, "this is the err")
