@@ -162,6 +162,9 @@ function getOrgIdByName (filter) {
 }
 
 const getUpdatedSensors = () => {
+  // initially this function gets all available sensor data from pumps.json in an instance
+  //the DB has been rolled back and remigrated and is empty, else it gets any new pump sensor data
+  // and updates the Welldone DB
   const sensorCheck = () => {
     sensorsTable()
     .then(res => {
@@ -186,12 +189,11 @@ const getUpdatedSensors = () => {
         })
         dataUpdate()
       } else if (res.length > 0) {
-        
+         // after performing a npm run fetch, there could be new pumps with sensor data - 
+        //check to see if there is any new pumps with sensor data coming from primic cached in pumps.json
         const current = res.map(item => item.physical_id)
         const incoming = Data.pumps.map(item => Number(item.id))
-
         let filtered = incoming.filter(item => !current.includes(item))
-
         const newSensors = Data.pumps.filter(item => filtered.includes(Number(item.id)))
        
           newSensors.map(data => {
@@ -235,6 +237,9 @@ getPrismicOrgs()
 
 
 const getUpdatedPumps = (orgResults) => {
+    // initially this function gets all available pump data from pumps.json in an instance
+  //the DB has been rolled back and remigrated and is empty, else it gets any new pump data
+  // and updates the Welldone DB
   const orgCheck = () => {
     getOrgs()
     .then(res => {
@@ -276,7 +281,9 @@ const getUpdatedPumps = (orgResults) => {
                 })
               })
             }) 
-          } newOrgAndPumpUpdate(orgResults)
+          } else {
+            newOrgAndPumpUpdate(orgResults)
+          }
         })
       }
       orgCheck()
@@ -287,7 +294,9 @@ const newOrgAndPumpUpdate = (orgResults) => {
   const orgCheck = () => {
     getOrgs()
     .then(res => {
+      //check for new organizations in prismic and add into Welldone DB
      const currentOrgs = res.map(item => item.org_name)
+     // these are the incoming organizations from prismic
      const incomingOrgs = orgResults.map(item => item.organizations)
      let filteredOrgs = incomingOrgs.filter(item => !currentOrgs.includes(item))
       if (filteredOrgs.length !== 0) {
@@ -303,11 +312,13 @@ const newOrgAndPumpUpdate = (orgResults) => {
             pumpsTable()
               .then(res => {
                 console.log("this is 311")
+                // after performing a npm run fetch, there could be new pumps - 
+                //check to see if there are any new pumps coming from primic cached in pumps.json
                   const currentPumps = res.map(item => item.sensor_pid)
                   const incomingPumps = Data.pumps.map(item => Number(item.id))
                   let filtered = incomingPumps.filter(item => !currentPumps.includes(item))
                   const newPumps = Data.pumps.filter(item => filtered.includes(Number(item.id)))
-                 
+                 //add any new pumps
                 if (newPumps.length !== 0) {
                   newPumps.forEach((data, idx) => {
                    
@@ -333,6 +344,8 @@ const newOrgAndPumpUpdate = (orgResults) => {
                   })
                 }) 
           } else {
+            // prismic returned no new organizations, check to see if there are any new pumps
+            //returned from prismic cached in pumps.json after recent npm run fetch
             pumpsTable()
             .then(res => {
               console.log("this is 348")
@@ -369,100 +382,11 @@ const newOrgAndPumpUpdate = (orgResults) => {
  orgCheck()
 }
 
-        
-//       } else if (res.length > 0) {
-
-//         console.log(res.length, "this is res length line 285")
-//         //get current orgs
-//         const currentOrgs = res.map(item => item.org_name)
-//         //get array of org names off incoming data
-//         const incomingOrgs = Data.pumps.map(item => item.organizations.organizations)
-//         //compare incoming org names to current
-//         let filteredOrgs = incomingOrgs.filter(item => !currentOrgs.includes(item))
-//         console.log(filteredOrgs, "this is the filtered orgs line 291")
-//         console.log(filteredOrgs.length, "this is the length of the filtered orgs")
-//         //add any current org name and headquarters into orgs table
-//         if (filteredOrgs.length !== 0) {
-//             filteredOrgs.forEach(org => {
-//               const { organizations, headquarter_city} = org
-                              
-//               const organization = {
-//                 org_name: organizations,
-//                 headquarter_city: headquarter_city
-//               }
-//               return db("organizations").insert(organization, "id")
-//               })
-//         // newOrgsPumpUpdate()
-//       } else {
-//         pumpsTable()
-//           .then(res => {
-//             console.log(res, "this is 311")
-//                   const currentPumps = res.map(item => item.sensor_pid)
-//                   const incomingPumps = Data.pumps.map(item => Number(item.id))
-          
-//                   let filtered = incomingPumps.filter(item => !currentPumps.includes(item))
-
-//                   const newPumps = Data.pumps.filter(item => filtered.includes(Number(item.id)))
-//                   console.log(newPumps, "these are the new pumps")
-              
-//                   newPumps.forEach((data, idx) => {
-//                     // find org id by name, return id, add id to pump under org_id
-                    
-//                     const orgName = data.organizations.organizations
-//                     getOrgIdByName(orgName)
-//                       .then(res => {
-//                         const pump = {
-//                           org_id: res.id,
-//                           sensor_pid: data.id,
-//                           latitude: data.latitude,
-//                           longitude: data.longitude,
-//                           village_name: data.village.village,
-//                           commune_name: data.village.commune,
-//                           district_name: data.village.district,
-//                           province_name: data.village.province
-//                         }
-//                         addPump(pump)
-//                       })
-//                     })
-//                   })
-//                 }
-//               }
-//             })
-//           }
-//   orgCheck() 
-// }
-
-function newOrgsPumpUpdate () {
-  console.log("this is the pumps table line 358")
-  pumpsTable()
-    .then(res => {
-    const currentPumps = res.map(item => item.sensor_pid)
-    const incomingPumps = Data.pumps.map(item => Number(item.id))
-
-    let filtered = incomingPumps.filter(item => !currentPumps.includes(item))
-    const newPumps = Data.pumps.filter(item => filtered.includes(Number(item.id)))
-    
-    newPumps.forEach((data, idx) => {
-      const orgName = data.organizations.organizations
-      getOrgIdByName(orgName)
-        .then(res => {
-          const pump = {
-            org_id: res.id,
-            sensor_pid: data.id,
-            latitude: data.latitude,
-            longitude: data.longitude,
-            village_name: data.village.village,
-            commune_name: data.village.commune,
-            district_name: data.village.district,
-            province_name: data.village.province
-          }
-          addPump(pump)
-        })
-      })
-    })
-}
-
 async function dataUpdate () {
+  //gets all the physical sensor id's currently in the Welldone DB, makes a request to the momo URL
+  //for the status of each pump/sensor and stores that data in a results array that is then iterated over
+  //and the new data is added into the Welldone DB, requests made daily
+  // by the Heroku Scheduler Dyno
   const getTable = async () => {
     try {
     const sensors = await sensorsTable ()
@@ -475,7 +399,6 @@ async function dataUpdate () {
         let newData = {}
        resMomo.data
           ? resMomo.data.dates.forEach(async (date, index) => {
-            // console.log(resMomo.data, "this is the res momo data")
               newData = {
                 ...newData,
                 statuses: {
@@ -496,7 +419,7 @@ async function dataUpdate () {
           status: resMomo.data.status,
           statuses: newData,
         })
-      console.log(results, "******RESULTS")
+      // console.log(results, "******RESULTS")
       } catch (err) {
         console.log(`Error on sensor #${sensor.physical_id}`)
         console.log(err.message, "this is the err")
