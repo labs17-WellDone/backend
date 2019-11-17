@@ -555,6 +555,7 @@ function getStatuses (history){
   )
 }
 
+getUpdatedSensors()
 module.exports = {getUpdated: function () {
   
   getPrismicOrgs,
