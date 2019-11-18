@@ -50,11 +50,11 @@ async function getPumps() {
     console.log("Fetching Pumps Init")
     let pumps = {}
     const prismicPumps = await prismic.getDocs("pump")
-    console.log(prismicPumps.results, "this is prismic results")
+    // console.log(prismicPumps.results, "this is prismic results")
     await asyncForEach(prismicPumps.results, async pump => {
       let village = null
       let organizations = null
-      console.log(pump.data, "this is pump.data.organizations.id")
+      // console.log(pump.data, "this is pump.data.organizations.id")
       if (pump.data && pump.data.village.id && !pump.data.village.isBroken) {
         village = await prismic.getVillage(pump.data.village.id)
       }
@@ -79,32 +79,45 @@ async function getPumps() {
 
     let results = []
     await asyncForEach(Object.keys(pumps), async (pump, index) => {
+      // let results = []
       try {
         console.log(`${index + 1}/${Object.keys(pumps).length}`)
         const res = await axios.get(`${url}${pump}`)
         let newData = {}
-        res.data
-          ? res.data.dates.forEach((date, index) => {
+        console.log(res.data.statuses[13])
+        // res.data
+      if (res.data) {
               newData = {
-                ...newData,
+               
                 statuses: {
-                  date: date,
-                  count: res.data.statuses[index].count,
-                  total: res.data.statuses[index].total,
-                  status: res.data.statuses[index].status,
-                  pad_counts: res.data.statuses[index].padCounts,
-                  pad_seconds:res.data.statuses[index].padSeconds,
-                  reported_percent:res.data.statuses[index].reportedPercent
+                  date: res.data.date.dates[13],
+                  count: res.data.statuses[13].count,
+                  total: res.data.statuses[13].total,
+                  status: res.data.statuses[13].status,
+                  pad_counts: res.data.statuses[13].padCounts,
+                  pad_seconds:res.data.statuses[13].padSeconds,
+                  reported_percent:res.data.statuses[13].reportedPercent
                 },
               }
-            })
-          : {}
-        results.push({
-          id: pump,
-          ...pumps[pump],
-          status: res.data.status,
-          statuses: newData,
-        })
+              console.log(newData, "this is the new data line 102")
+              results.push({
+                id: pump,
+                ...pumps[pump],
+                status: res.data.statuses[13].status,
+                statuses: newData,
+              })
+           console.log(results, "this is the results line 108")
+            }
+            
+          // : {}
+        //   console.log(newData, "this is the newData line 102")
+        // results.push({
+        //   id: pump,
+        //   ...pumps[pump],
+        //   status: res.data.statuses[13].status,
+        //   statuses: newData,
+        // }), console.log(results, "this is results line 110")
+    
       } catch (err) {
         console.error(`Error on pump #${pump}`)
         results.push({ id: pump, ...pumps[pump], status: 0, error: "500" })
