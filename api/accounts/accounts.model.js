@@ -12,6 +12,17 @@ const find = () => {
   }
 };
 
+function findBy(filter) {
+  return db("accounts").where(filter)
+  .then(res => {
+    if(res.length === 0) {
+      return 0
+    } else {
+      return 1
+    }
+  })
+}
+
 //* get account by id
 const findById = id => {
   try {
@@ -36,12 +47,10 @@ const insert = async account => {
 //* update account
 const update = async (id, changes) => {
   try {
-    changes
-      ? await db("accounts")
+    return db("accounts")
           .where({ id })
           .first()
           .update(changes)
-      : null;
   } catch (err) {
     console.log(err);
   }
@@ -60,8 +69,11 @@ const remove = async id => {
 
 module.exports = {
   find,
+  findBy,
   findById,
   insert,
   update,
   remove
 };
+
+
